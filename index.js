@@ -35,6 +35,7 @@ async function run() {
     // await client.connect();
     const tourCollection = client.db('tourDB').collection('tour');
     const countryCollection = client.db('tourDB').collection('country');
+    const reviewCollection = client.db('tourDB').collection('review');
     // const userCollection = client.db('tourDB').collection('user');
 
     // R ->here concept use for finding multiple documents
@@ -88,7 +89,20 @@ async function run() {
       console.log(result);
       res.send(result);
     })
+ 
+    app.get('/review', async(req,res) =>{
+      // const cursor = reviewCollection.find();
+      const result = await reviewCollection.find({}).toArray();
+      res.send(result);
 
+    })
+    app.get('/review/:id', async(req,res) => {
+      const id = req.params.id;
+      // console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const review = await reviewCollection.findOne(query);
+      res.send(review);
+    })
 
     // C
     app.post('/tourSpot', async (req, res) => {
